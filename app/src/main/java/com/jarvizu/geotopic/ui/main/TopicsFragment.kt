@@ -64,7 +64,7 @@ class TopicsFragment : Fragment() {
 
                             adapter = fastAdapter
 
-
+                            // For each result safe call and display to adapter
                             resource?.results?.forEach() {
                                 val placeItem = PlaceItem()
                                 placeItem.name = it?.name
