@@ -5,7 +5,7 @@
     <string name="place_text">Place</string>
     <string name="mainfragmentPlaceHolder">MainFragment</string>
     <string name="label">Query</string>
-    <string name="city">Nowhere</string>
+    <string name="city">Enter location from SearchBar…</string>
     <string name="radius">Radius</string>
     <string name="number_picker_formatter">number_picker_formatter</string>
     <string name="radiusPickerHint">Radius</string>

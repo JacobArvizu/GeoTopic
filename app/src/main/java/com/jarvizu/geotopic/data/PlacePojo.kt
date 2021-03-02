@@ -4,6 +4,10 @@ package com.jarvizu.geotopic.data
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+/*
+    Place Pojo
+ */
+
 @JsonClass(generateAdapter = true)
 data class PlacePojo(
     @Json(name = "html_attributions")

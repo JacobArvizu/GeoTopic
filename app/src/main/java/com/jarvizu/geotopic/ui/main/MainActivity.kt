@@ -1,28 +1,32 @@
 package com.jarvizu.geotopic.ui.main
 
-import android.Manifest
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.afollestad.assent.AssentResult
+import com.afollestad.assent.Permission
+import com.afollestad.assent.coroutines.awaitPermissionsResult
 import com.jarvizu.geotopic.R
-import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.RuntimePermissions
+import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.launch
 
 
-@RuntimePermissions
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
+
+        lifecycleScope.launchWhenCreated {
+            getPermissions()
+        }
     }
 
-
-    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun needsPermission() {
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
+    // Get permissions
+    private suspend fun getPermissions() {
+        val result: AssentResult = awaitPermissionsResult(
+            Permission.ACCESS_FINE_LOCATION,
+        )
     }
 }

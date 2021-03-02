@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.libraries.places.api.Places
+import com.jarvizu.geotopic.data.NavArgs
 import com.jarvizu.geotopic.data.PlaceItem
 import com.jarvizu.geotopic.data.PlacePojo
 import com.jarvizu.geotopic.databinding.TopicsFragmentBinding
@@ -16,6 +19,8 @@ import com.jarvizu.geotopic.utils.Constants
 import com.jarvizu.geotopic.utils.ServiceBuilder
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +29,8 @@ import java.util.*
 
 
 class Topics : Fragment() {
+
+    private val safeArguments by navArgs<TopicsArgs>()
 
     private var _binding: TopicsFragmentBinding? = null
 
@@ -46,9 +53,19 @@ class Topics : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        makePlaceRequest()
+    }
+
+    /*
+        Make place requsest using safeArgs passed with navigation component
+     */
+    private fun makePlaceRequest() {
+
+        val args = safeArguments.navArgs
 
         val request = ServiceBuilder.buildService(APIService::class.java)
-        val call = request.getPlaces(Constants.API_KEY, "37.931870,-121.695786", "10", "yoga","name,formatted_address")
+        val call = request.getPlaces(Constants.API_KEY,args.location, args.radius,args.query, "formatted_address," +
+                "name,,formatted_address")
 
         call.enqueue(object : Callback<PlacePojo> {
             override fun onResponse(call: Call<PlacePojo>, response: Response<PlacePojo>) {
@@ -76,9 +93,8 @@ class Topics : Fragment() {
             }
 
             override fun onFailure(call: Call<PlacePojo>, t: Throwable) {
-                Toast.makeText(requireActivity(), "${t.message}", Toast.LENGTH_SHORT).show()
+                Toasty.error(requireActivity(), "${t.message}", Toast.LENGTH_LONG).show()
             }
         })
-
     }
 }

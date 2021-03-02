@@ -14,6 +14,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.jarvizu.geotopic.R
+import com.jarvizu.geotopic.data.NavArgs
 import com.jarvizu.geotopic.databinding.MainFragmentBinding
 import com.jarvizu.geotopic.utils.Constants
 import es.dmoral.toasty.Toasty
@@ -44,34 +45,33 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        //binding.txtQueryInput.isEnabled = false
-
-        // Initialize the AutocompleteSupportFragment.
-        val autocompleteFragment =
-            childFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
-
-
-        // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
-
-        // Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                Toasty.success(requireActivity(), place.name.toString(), Toast.LENGTH_SHORT).show()
-                Timber.d("%s selected", place.name.toString())
-                binding.txtCity.text = place.name
-                currentPlace = place
-            }
-
-            override fun onError(status: Status) {
-                // TODO: Handle the error.
-            }
-        })
 
         with(binding) {
 
+            val autocompleteFragment =
+                childFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+
+
+            // Specify the types of place data to return.
+            autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG))
+
+            // Set up a PlaceSelectionListener to handle the response.
+            autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+                override fun onPlaceSelected(place: Place) {
+                    Toasty.success(requireActivity(), place.name.toString(), Toast.LENGTH_LONG).show()
+                    Timber.d("%s selected", place.name.toString())
+                    txtCity.text = place.name
+                    currentPlace = place
+                }
+
+                override fun onError(status: Status) {
+                    Toasty.error(requireActivity(), status.statusMessage, Toast.LENGTH_LONG).show()
+                }
+            })
+
             fabSearch.setOnClickListener {
                 Timber.d("Fab pressed")
+
                 if (txtQueryInput.text != null) {
                     try {
                         Toasty.success(
@@ -81,7 +81,11 @@ class MainFragment : Fragment() {
                                         .toString(),
                             Toast.LENGTH_LONG
                         ).show()
-                        findNavController().navigate(R.id.action_mainFragment_to_topics)
+                        // Navigate passing Radius
+                        Timber.d(currentPlace.latLng.toString())
+                        val action = MainFragmentDirections.actionMainFragmentToTopics(NavArgs(currentPlace.latLng
+                            .toString(), numberPicker.progress.toString(), txtQueryInput.text.toString()))
+                        findNavController().navigate(action)
                     } catch (exception: Exception) {
                         Toasty.error(requireActivity(), "Place/City not selected!", Toast.LENGTH_LONG)
                             .show()
@@ -91,8 +95,6 @@ class MainFragment : Fragment() {
 
                 }
             }
-
-
         }
     }
 }
