@@ -7,30 +7,26 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.libraries.places.api.Places
-import com.jarvizu.geotopic.data.NavArgs
+import com.google.android.material.snackbar.Snackbar
 import com.jarvizu.geotopic.data.PlaceItem
-import com.jarvizu.geotopic.data.PlacePojo
 import com.jarvizu.geotopic.databinding.TopicsFragmentBinding
 import com.jarvizu.geotopic.utils.Constants
-import com.jarvizu.geotopic.utils.ServiceBuilder
+import com.jarvizu.geotopic.utils.Status
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import es.dmoral.toasty.Toasty.success
 import timber.log.Timber
 import java.util.*
 
+@AndroidEntryPoint
+class TopicsFragment : Fragment() {
 
-class Topics : Fragment() {
-
-    private val safeArguments by navArgs<TopicsArgs>()
+    private val safeArguments by navArgs<TopicsFragmentArgs>()
 
     private var _binding: TopicsFragmentBinding? = null
 
@@ -49,51 +45,41 @@ class Topics : Fragment() {
         _binding = TopicsFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
         Places.initialize(requireContext(), Constants.API_KEY, Locale.US)
+        viewModel.getPlaces(safeArguments.navArgs)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        makePlaceRequest()
-    }
+        viewModel.resource.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            when(it.status){
+                Status.SUCCESS -> {
+                    it.data.let {resource->
+                        Timber.d(resource.toString())
+                        binding.rvPlaces.apply {
+                            setHasFixedSize(true)
+                            layoutManager = LinearLayoutManager(requireActivity())
+                            //create the ItemAdapter holding your Items
+                            val itemAdapter = ItemAdapter<PlaceItem>()
+                            val fastAdapter = FastAdapter.with(itemAdapter)
 
-    /*
-        Make place requsest using safeArgs passed with navigation component
-     */
-    private fun makePlaceRequest() {
-
-        val args = safeArguments.navArgs
-
-        val request = ServiceBuilder.buildService(APIService::class.java)
-        val call = request.getPlaces(Constants.API_KEY,args.location, args.radius,args.query, "formatted_address," +
-                "name,,formatted_address")
-
-        call.enqueue(object : Callback<PlacePojo> {
-            override fun onResponse(call: Call<PlacePojo>, response: Response<PlacePojo>) {
-                if (response.isSuccessful) {
-                    Timber.d(response.message())
-                    binding.rvPlaces.apply {
-                        setHasFixedSize(true)
-                        layoutManager = LinearLayoutManager(requireActivity())
-                        //create the ItemAdapter holding your Items
-                        val itemAdapter = ItemAdapter<PlaceItem>()
-                        val fastAdapter = FastAdapter.with(itemAdapter)
-
-                        adapter = fastAdapter
+                            adapter = fastAdapter
 
 
-                        response.body()?.results?.forEach {
-                            val placeItem = PlaceItem()
-                            placeItem.name = it?.name
-                            placeItem.address = it?.formattedAddress
-                            itemAdapter.add(placeItem)
+                            resource?.results?.forEach() {
+                                val placeItem = PlaceItem()
+                                placeItem.name = it?.name
+                                placeItem.address = it?.formattedAddress
+                                itemAdapter.add(placeItem)
+                            }
                         }
-
                     }
                 }
-            }
-
-            override fun onFailure(call: Call<PlacePojo>, t: Throwable) {
-                Toasty.error(requireActivity(), "${t.message}", Toast.LENGTH_LONG).show()
+                Status.LOADING -> {
+                    Timber.d("Loading data...")
+                }
+                Status.ERROR -> {
+                    Toasty.error(requireActivity(), "Error" + Status.ERROR, Toast.LENGTH_SHORT).show()
+                }
             }
         })
     }

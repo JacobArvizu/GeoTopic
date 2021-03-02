@@ -9,7 +9,7 @@ import com.squareup.moshi.JsonClass
  */
 
 @JsonClass(generateAdapter = true)
-data class PlacePojo(
+data class PlaceResponse(
     @Json(name = "html_attributions")
     val htmlAttributions: List<Any?>? = listOf(),
     @Json(name = "next_page_token")

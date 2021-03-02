@@ -1,18 +1,23 @@
 package com.jarvizu.geotopic.ui.main
 
 import android.os.Bundle
-import android.widget.Toast
+import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.afollestad.assent.AssentResult
 import com.afollestad.assent.Permission
 import com.afollestad.assent.coroutines.awaitPermissionsResult
+import com.google.android.material.snackbar.Snackbar
 import com.jarvizu.geotopic.R
-import es.dmoral.toasty.Toasty
-import kotlinx.coroutines.launch
+import com.jarvizu.geotopic.utils.Status
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,5 +33,10 @@ class MainActivity : AppCompatActivity() {
         val result: AssentResult = awaitPermissionsResult(
             Permission.ACCESS_FINE_LOCATION,
         )
+    }
+
+    override fun onStart() {
+        super.onStart()
+
     }
 }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
@@ -17,11 +16,13 @@ import com.jarvizu.geotopic.R
 import com.jarvizu.geotopic.data.NavArgs
 import com.jarvizu.geotopic.databinding.MainFragmentBinding
 import com.jarvizu.geotopic.utils.Constants
+import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import timber.log.Timber
 import java.util.*
 
 
+@AndroidEntryPoint
 class MainFragment : Fragment() {
 
     private var _binding: MainFragmentBinding? = null
@@ -30,8 +31,6 @@ class MainFragment : Fragment() {
     // This property is only valid between onCreateView and
 // onDestroyView.
     private val binding get() = _binding!!
-
-    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,8 +82,12 @@ class MainFragment : Fragment() {
                         ).show()
                         // Navigate passing Radius
                         Timber.d(currentPlace.latLng.toString())
-                        val action = MainFragmentDirections.actionMainFragmentToTopics(NavArgs(currentPlace.latLng
-                            .toString(), numberPicker.progress.toString(), txtQueryInput.text.toString()))
+                        val action = MainFragmentDirections.actionMainFragmentToTopics(
+                            NavArgs(
+                                currentPlace.latLng
+                                    .toString(), numberPicker.progress.toString(), txtQueryInput.text.toString()
+                            )
+                        )
                         findNavController().navigate(action)
                     } catch (exception: Exception) {
                         Toasty.error(requireActivity(), "Place/City not selected!", Toast.LENGTH_LONG)
