@@ -1,10 +1,9 @@
 package com.jarvizu.geotopic.di
 
-import com.jarvizu.geotopic.ui.main.APIHelper
-import com.jarvizu.geotopic.ui.main.APIHelperImpl
-import com.jarvizu.geotopic.ui.main.APIService
+import com.jarvizu.geotopic.api.APIHelper
+import com.jarvizu.geotopic.api.APIHelperImpl
+import com.jarvizu.geotopic.api.APIService
 import com.jarvizu.geotopic.utils.Constants
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +11,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import javax.inject.Singleton
 
@@ -48,7 +47,7 @@ object AppModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient, BASE_URL: String): Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .addConverterFactory(MoshiConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()
 

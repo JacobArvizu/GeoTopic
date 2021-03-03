@@ -1,5 +1,8 @@
 package com.jarvizu.geotopic.utils
 
+/*
+    Resource wrapper file to hold response status/data
+ */
 data class Resource<out T>(
     val status: Status,
     val data: T?,

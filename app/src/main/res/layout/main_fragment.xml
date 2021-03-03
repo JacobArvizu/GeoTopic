@@ -67,14 +67,14 @@
         style="@style/NumberPicker.Filled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:progress="50"
+        android:progress="250"
         app:layout_constraintBottom_toBottomOf="@+id/txtFieldInputLayout"
         app:layout_constraintStart_toEndOf="@+id/txtFieldInputLayout"
         app:layout_constraintTop_toTopOf="@+id/txtFieldInputLayout"
-        app:picker_max="100"
-        app:picker_min="1"
+        app:picker_max="5000"
+        app:picker_min="0"
         app:picker_orientation="vertical"
-        app:picker_stepSize="2"
+        app:picker_stepSize="25"
         app:picker_tracker="exponential" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

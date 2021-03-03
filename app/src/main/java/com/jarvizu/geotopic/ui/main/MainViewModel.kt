@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jarvizu.geotopic.data.EventResponse
 import com.jarvizu.geotopic.data.NavArgs
-import com.jarvizu.geotopic.data.PlaceResponse
 import com.jarvizu.geotopic.repository.MainRepository
 import com.jarvizu.geotopic.utils.Constants
 import com.jarvizu.geotopic.utils.Resource
@@ -15,18 +15,17 @@ import kotlinx.coroutines.launch
 class MainViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
-    private val _resource = MutableLiveData<Resource<PlaceResponse>>()
+    private val _resource = MutableLiveData<Resource<EventResponse>>()
 
 
-    val resource: LiveData<Resource<PlaceResponse>>
+    val resource: LiveData<Resource<EventResponse>>
         get() = _resource
 
 
-    public fun getPlaces(navArgs: NavArgs) = viewModelScope.launch {
+    fun getEvents(navArgs: NavArgs) = viewModelScope.launch {
         _resource.postValue(Resource.loading(null))
-        mainRepository.getPlaces(
-            Constants.API_KEY, navArgs.location, navArgs.radius, navArgs.query, "formatted_address," +
-                    "name,place_id"
+        mainRepository.getEvents(
+            Constants.TICKETMASTER_API_KEY, navArgs.location, navArgs.radius, navArgs.keyword
         ).let {
             if (it.isSuccessful) {
                 _resource.postValue(Resource.success(it.body()))

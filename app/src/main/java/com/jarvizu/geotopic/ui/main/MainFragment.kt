@@ -38,28 +38,31 @@ class MainFragment : Fragment() {
     ): View {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
-        Places.initialize(requireContext(), Constants.API_KEY, Locale.US)
+        Places.initialize(requireContext(), Constants.PLACE_API_KEY, Locale.US)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-
+        /*
+         * Bind all UI elements to var binding
+         */
         with(binding) {
 
+            // Autocomplete Fragment
             val autocompleteFragment =
                 childFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
-
-
-            // Specify the types of place data to return.
-            autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG))
-
-            // Set up a PlaceSelectionListener to handle the response.
+            autocompleteFragment.setPlaceFields(
+                listOf(
+                    Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place
+                        .Field.ADDRESS
+                )
+            )
             autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
                 override fun onPlaceSelected(place: Place) {
                     Toasty.success(requireActivity(), place.name.toString(), Toast.LENGTH_LONG).show()
                     Timber.d("%s selected", place.name.toString())
-                    txtCity.text = place.name
+                    txtCity.text = "Searching near:\n${place.address}"
                     currentPlace = place
                 }
 
@@ -68,9 +71,9 @@ class MainFragment : Fragment() {
                 }
             })
 
+
             fabSearch.setOnClickListener {
                 Timber.d("Fab pressed")
-
                 if (txtQueryInput.text != null) {
                     try {
                         Toasty.success(
@@ -78,14 +81,16 @@ class MainFragment : Fragment() {
                             "Searching for " + txtQueryInput.text + " within " + numberPicker.progress + "mi radius of " +
                                     currentPlace.name
                                         .toString(),
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_SHORT
                         ).show()
                         // Navigate passing Radius
-                        Timber.d(currentPlace.latLng.toString())
+                        val latLong: String = currentPlace.latLng?.latitude.toString() + "," + currentPlace.latLng
+                            ?.longitude.toString()
+                        Timber.d(latLong)
+                        // Build navArgs for retrofit http request and pass as navArg
                         val action = MainFragmentDirections.actionMainFragmentToTopics(
                             NavArgs(
-                                currentPlace.latLng
-                                    .toString(), numberPicker.progress.toString(), txtQueryInput.text.toString()
+                                latLong, numberPicker.progress.toString(), txtQueryInput.text.toString()
                             )
                         )
                         findNavController().navigate(action)
