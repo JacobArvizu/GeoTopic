@@ -48,7 +48,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtQueryInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,9 +66,9 @@
     <it.sephiroth.android.library.numberpicker.NumberPicker
         android:id="@+id/numberPicker"
         style="@style/NumberPicker.Filled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:progress="250"
+        android:layout_width="134dp"
+        android:layout_height="39dp"
+        android:progress="500"
         app:layout_constraintBottom_toBottomOf="@+id/txtFieldInputLayout"
         app:layout_constraintStart_toEndOf="@+id/txtFieldInputLayout"
         app:layout_constraintTop_toTopOf="@+id/txtFieldInputLayout"

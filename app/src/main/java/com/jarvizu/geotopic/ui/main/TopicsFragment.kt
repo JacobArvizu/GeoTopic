@@ -43,7 +43,7 @@ class TopicsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment using viewbinding
         _binding = TopicsFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -92,9 +92,9 @@ class TopicsFragment : Fragment() {
                             setHasFixedSize(true)
                             adapter = fastAdapter
                             layoutManager = LinearLayoutManager(requireActivity())
-
+                            Timber.d("Elements found%s", resource?.page?.totalElements)
                             if (resource?.page?.totalElements == 0) {
-                                Toasty.info(requireActivity(), "No events found in radius", Toast.LENGTH_LONG)
+                                Toasty.info(requireActivity(), "No events found in radius", Toast.LENGTH_LONG).show()
                             } else {
                                 // For each result safe call and display to adapter
                                 resource?.embedded?.events?.forEach { event ->
