@@ -12,21 +12,24 @@
         tools:layout="@layout/main_fragment">
         <action
             android:id="@+id/action_mainFragment_to_topics"
-            app:destination="@id/topics">
-            <argument
-                android:name="navArgs"
-                app:argType="com.jarvizu.geotopic.data.NavArgs"
-                app:nullable="false" />
-        </action>
+            app:destination="@id/topics"></action>
+
     </fragment>
     <fragment
         android:id="@+id/topics"
         android:name="com.jarvizu.geotopic.ui.main.TopicsFragment"
         android:label="topics_fragment"
         tools:layout="@layout/topics_fragment">
-        <argument
-            android:name="navArgs"
-            app:argType="com.jarvizu.geotopic.data.NavArgs"
-            app:nullable="false" />
+        <action
+            android:id="@+id/action_topics_to_mapFragment"
+            app:destination="@id/mapFragment"></action>
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.jarvizu.geotopic.ui.main.MapFragment"
+        android:label="MapFragment">
+        <action
+            android:id="@+id/action_mapFragment_to_topics"
+            app:destination="@id/topics" />
     </fragment>
 </navigation>

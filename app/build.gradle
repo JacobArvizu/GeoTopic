@@ -62,12 +62,15 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.2-native-mt'
     implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
     implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation "com.github.skydoves:whatif:1.0.9"
+    implementation "com.github.skydoves:whatif-android:1.0.9"
 
     //Ui
     implementation 'com.github.GrenderG:Toasty:1.5.0'
     implementation 'it.sephiroth.android.library:number-sliding-picker:1.1.1'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    implementation 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:3.0.0'
+    kapt 'com.github.bumptech.glide:compiler:4.12.0'
     //Hilt
     implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0-alpha03'
     implementation 'com.google.dagger:hilt-android:2.33-beta'
@@ -80,26 +83,10 @@ dependencies {
     implementation "com.mikepenz:fastadapter:${latestFastAdapterRelease}"
     implementation "com.mikepenz:fastadapter-extensions-expandable:${latestFastAdapterRelease}"
     implementation "com.mikepenz:fastadapter-extensions-binding:${latestFastAdapterRelease}"
-    // view binding helpers
-    implementation "com.mikepenz:fastadapter-extensions-diff:${latestFastAdapterRelease}"
-    // diff util helpers
-    implementation "com.mikepenz:fastadapter-extensions-drag:${latestFastAdapterRelease}"
-    // drag support
-    implementation "com.mikepenz:fastadapter-extensions-paged:${latestFastAdapterRelease}"
-    // paging support
-    implementation "com.mikepenz:fastadapter-extensions-scroll:${latestFastAdapterRelease}"
-    // scroll helpers
-    implementation "com.mikepenz:fastadapter-extensions-swipe:${latestFastAdapterRelease}"
-    // swipe support
-    implementation "com.mikepenz:fastadapter-extensions-ui:${latestFastAdapterRelease}"
-    // pre-defined ui components
-    implementation "com.mikepenz:fastadapter-extensions-utils:${latestFastAdapterRelease}"
-    // needs the `expandable`, `drag` and `scroll` extension.
 
-
-    implementation 'com.afollestad.assent:core:3.0.0-RC4'
-    implementation 'com.afollestad.assent:coroutines:3.0.0-RC4'
-    implementation 'com.afollestad.assent:rationales:3.0.0-RC4'
+    // Permissions
+    implementation "com.github.skydoves:needs:1.1.2"
+    implementation 'pub.devrel:easypermissions:3.0.0'
 
     implementation("com.squareup.moshi:moshi-kotlin:1.11.0")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.11.0")

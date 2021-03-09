@@ -12,7 +12,8 @@ class APIHelperImpl @Inject constructor(
         location: String,
         radius: String,
         keyword: String,
+        sort: String,
     ): Response<EventResponse> {
-        return apiService.getEvents(key, location, radius, keyword)
+        return apiService.getEvents(key, location, radius, keyword, sort)
     }
 }

@@ -9,6 +9,7 @@ import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 class EventItem : AbstractBindingItem<EventItemBinding>() {
     var name: String? = "Name"
+    var venueName: String? = "Venue"
     var photo: String? = null
     var address: String? = "Address"
     var date: String? = "Date"
@@ -19,6 +20,7 @@ class EventItem : AbstractBindingItem<EventItemBinding>() {
 
     override fun bindView(binding: EventItemBinding, payloads: List<Any>) {
         binding.eventName.text = "Event Name: " + name
+        binding.venueName.text = venueName
         binding.eventAddress.text = "Address:\n" + address
         // Load image into glide
         Glide

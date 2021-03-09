@@ -14,11 +14,14 @@
     <string name="description">description</string>
     <string name="place_address">address</string>
     <string name="place_name">name</string>
-    <string name="API_KEY">AIzaSyBf-QP8Yrbk_CuE90g2kvU8ic5bRNpu7fA</string>
+    <string name="API_KEY">AIzaSyBKq51Z_IfEPzOE1nxc2WjagcsWaZQBrUs</string>
     <string name="event_description">description</string>
     <string name="event_name">name</string>
     <string name="event_address">address</string>
     <string name="event_date">date</string>
     <string name="Description">TODO</string>
     <string name="GlideDescription">description</string>
+    <string name="map">Map</string>
+    <string name="list">List</string>
+    <string name="venuename">venueName</string>
 </resources>

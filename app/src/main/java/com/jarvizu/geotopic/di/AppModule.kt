@@ -39,9 +39,8 @@ object AppModule {
     @Provides
     fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor) =
         OkHttpClient()
-            .newBuilder() //httpLogging interceptor for logging network requests
-            .addInterceptor(loggingInterceptor) //Encryption interceptor for encryption of request data
-            .build()
+            .newBuilder() 
+            .addInterceptor(loggingInterceptor) //httpLogging interceptor for logging network requests
 
     @Singleton
     @Provides

@@ -9,11 +9,17 @@ The result should be a list of events in the radius
 
 # Implementation 
 
-* Data Pattern - MVVM
+* MVVM Data Pattern - Utilizes LiveData and lifecycle aware components to access a remote DataSource(TicketMasterEventSearchApi)
 
-* Dependency Injection
+* ViewBinding - Uses ViewBinding to bind views with adapter & Activities/Fragments 
+
+* Single Activity Architecture 
+
+* Dependency Injection 
 
 * Kotlin Coroutines
+
+* JetPack Components
 
 * Glide Image Loading
 
