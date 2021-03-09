@@ -108,7 +108,8 @@ class TopicsFragment : Fragment() {
                                         viewModel.addEventMarker(
                                             venue?.location?.latitude,
                                             venue?.location?.longitude,
-                                            venue?.name
+                                            venue?.name,
+                                            event.name
                                         )
                                     }
                                     eventItem.date = getStringFormatted(event?.dates?.start?.localDate)

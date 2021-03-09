@@ -17,7 +17,8 @@ class MainRepository @Inject constructor(
     private val apiHelper: APIHelper
 ) {
 
-    data class Location(val latitude: String, val longitude: String, val venueTitle: String)
+    // Holds event marker
+    data class Location(val latitude: String, val longitude: String, val venueTitle: String, val eventName : String)
 
     val locationMarkers: MutableList<Location> = mutableListOf()
 

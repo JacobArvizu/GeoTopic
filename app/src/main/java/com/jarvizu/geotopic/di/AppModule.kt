@@ -1,5 +1,6 @@
 package com.jarvizu.geotopic.di
 
+import com.jarvizu.geotopic.BuildConfig
 import com.jarvizu.geotopic.api.APIHelper
 import com.jarvizu.geotopic.api.APIHelperImpl
 import com.jarvizu.geotopic.api.APIService
@@ -12,24 +13,12 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import timber.log.Timber
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Provides
-    @Singleton
-    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-        val httpLoggingInterceptor = HttpLoggingInterceptor { message: String? ->
-            Timber.d(
-                "HTTP::$message"
-            )
-        }
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        return httpLoggingInterceptor
-    }
 
     @Provides
     fun provideBaseUrl() = Constants.BASE_URL
@@ -37,10 +26,18 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor) =
-        OkHttpClient()
-            .newBuilder() 
-            .addInterceptor(loggingInterceptor) //httpLogging interceptor for logging network requests
+    fun provideOkHttpClient() = if (BuildConfig.DEBUG){
+        val loggingInterceptor =HttpLoggingInterceptor()
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+    }else{
+        OkHttpClient
+            .Builder()
+            .build()
+    }
+
 
     @Singleton
     @Provides

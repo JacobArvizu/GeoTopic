@@ -24,11 +24,12 @@ class MainViewModel @ViewModelInject constructor(
     fun setRepositoryParameters(location: String, radius: String, keyword: String) = mainRepository
         .setRestParameters(location, radius, keyword)
 
-    fun addEventMarker(latitude: String?, longitude: String?, venueTitle: String?) {
+    fun addEventMarker(latitude: String?, longitude: String?, venueTitle: String?, eventName : String?) {
         mainRepository.locationMarkers.add(
             MainRepository.Location(
                 latitude.toString(), longitude.toString(),
-                venueTitle.toString()
+                venueTitle.toString(),
+                eventName.toString()
             )
         )
     }
